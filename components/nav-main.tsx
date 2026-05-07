@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { ExpandMenuIcon } from "@/components/icons/sidebar-icons"
 import {
   Collapsible,
   CollapsibleContent,
@@ -12,50 +13,74 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
+import type { NavItem } from "@/lib/navigation/sidebar-types"
+import { isNavItemActive } from "@/lib/navigation/sidebar-utils"
 
 export function NavMain({
   label = "Platform",
   items,
 }: {
   label?: string
-  items: {
-    title: string
-    url: string
-    icon?: React.ReactNode
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+  items: NavItem[]
 }) {
   const pathname = usePathname()
+
+  const renderSubItems = (subItems: NavItem[]) => (
+    <SidebarMenuSub>
+      {subItems.map((subItem) => {
+        const isSubItemActive = isNavItemActive(subItem, pathname)
+        const SubIcon = subItem.icon
+
+        return (
+          <SidebarMenuSubItem key={subItem.href}>
+            <SidebarMenuSubButton asChild isActive={isSubItemActive}>
+              <Link href={subItem.href}>
+                {SubIcon ? <SubIcon aria-hidden="true" className="size-4" /> : null}
+                <span>{subItem.title}</span>
+              </Link>
+            </SidebarMenuSubButton>
+            {subItem.items?.length ? renderSubItems(subItem.items) : null}
+          </SidebarMenuSubItem>
+        )
+      })}
+    </SidebarMenuSub>
+  )
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const hasActiveSubItem =
-            item.items?.some(
-              (subItem) =>
-                pathname === subItem.url || pathname.startsWith(`${subItem.url}/`)
-            ) ?? false
-          const isActive =
-            hasActiveSubItem ||
-            pathname === item.url ||
-            pathname.startsWith(`${item.url}/`)
+          const Icon = item.icon
+          const isActive = isNavItemActive(item, pathname)
+          const hasChildren = Boolean(item.items?.length)
+
+          if (!hasChildren) {
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
+                  <Link href={item.href}>
+                    {Icon ? <Icon aria-hidden="true" className="size-4" /> : null}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+                {item.badge ? (
+                  <SidebarMenuBadge>{item.badge.label}</SidebarMenuBadge>
+                ) : null}
+              </SidebarMenuItem>
+            )
+          }
 
           return (
             <Collapsible
-              key={item.title}
+              key={item.href}
               asChild
               open={isActive}
               className="group/collapsible"
@@ -63,32 +88,19 @@ export function NavMain({
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton tooltip={item.title} isActive={isActive}>
-                    {item.icon}
+                    {Icon ? <Icon aria-hidden="true" className="size-4" /> : null}
                     <span>{item.title}</span>
-                    <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    {item.badge ? (
+                      <SidebarMenuBadge>{item.badge.label}</SidebarMenuBadge>
+                    ) : null}
+                    <ExpandMenuIcon
+                      aria-hidden="true"
+                      className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                    />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {item.items?.map((subItem) => {
-                      const isSubItemActive =
-                        pathname === subItem.url ||
-                        pathname.startsWith(`${subItem.url}/`)
-
-                      return (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                            isActive={isSubItemActive}
-                          >
-                            <Link href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      )
-                    })}
-                  </SidebarMenuSub>
+                  {item.items?.length ? renderSubItems(item.items) : null}
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>

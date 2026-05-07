@@ -19,6 +19,18 @@
       "skillPath": "skills/frontend-accessibility-best-practices/SKILL.md",
       "computedHash": "d9160dfd924c53bb033f4fac882a7cb0c2d2a9cd34e19473a6e4f6d09b0917de"
     },
+    "refactor": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/refactor/SKILL.md",
+      "computedHash": "87789a786b96f99ba0680e89345a975106e10e7db1071c7cdc2e76d507c449d6"
+    },
+    "shadcn": {
+      "source": "shadcn/ui",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "f0fdd03f4755cbb3b57e20fe6fd4a97c00d34e6780187b6559316986e8d848db"
+    },
     "shadcn-layouts": {
       "source": "jwynia/agent-skills",
       "sourceType": "github",

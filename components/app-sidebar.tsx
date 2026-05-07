@@ -12,100 +12,43 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import {
-  AudioLinesIcon,
-  GalleryVerticalEndIcon,
-  LayoutDashboardIcon,
-  TerminalIcon,
-} from "lucide-react"
+import { sidebarConfig } from "@/lib/navigation/sidebar-config"
+import type {
+  AccessEvaluator,
+  NavGroup,
+  Team,
+  User,
+} from "@/lib/navigation/sidebar-types"
+import { filterNavGroups } from "@/lib/navigation/sidebar-utils"
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: (
-        <GalleryVerticalEndIcon
-        />
-      ),
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: (
-        <AudioLinesIcon
-        />
-      ),
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: (
-        <TerminalIcon
-        />
-      ),
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Templates",
-      url: "/dashboard",
-      icon: <LayoutDashboardIcon />,
-      isActive: true,
-      items: [
-        {
-          title: "Ecommerce",
-          url: "/dashboard/ecommerce",
-        },
-        {
-          title: "CRM",
-          url: "/dashboard/crm",
-        },
-        {
-          title: "SaaS",
-          url: "/dashboard/saas",
-        },
-        {
-          title: "Marketing",
-          url: "/dashboard/marketing",
-        },
-        {
-          title: "Analytics",
-          url: "/dashboard/analytics",
-        },
-        {
-          title: "Crypto",
-          url: "/dashboard/crypto",
-        },
-        {
-          title: "Logistics",
-          url: "/dashboard/logistics",
-        },
-        {
-          title: "Stocks",
-          url: "/dashboard/stocks",
-        },
-      ],
-    },
-  ],
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  user?: User
+  teams?: Team[]
+  navGroups?: NavGroup[]
+  hasAccess?: AccessEvaluator
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user = sidebarConfig.user,
+  teams = sidebarConfig.teams,
+  navGroups = sidebarConfig.navGroups,
+  hasAccess,
+  ...props
+}: AppSidebarProps) {
+  const visibleNavGroups = filterNavGroups(navGroups, hasAccess)
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain label="Dashboard" items={data.navMain} />
+        {visibleNavGroups.map((group) => (
+          <NavMain key={group.id} label={group.label} items={group.items} />
+        ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
