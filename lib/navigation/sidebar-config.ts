@@ -139,22 +139,18 @@ export const sidebarConfig = {
             {
               title: "List",
               href: "/apps/invoice/list",
-              icon: InvoiceMenuIcon,
             },
             {
               title: "Details",
               href: "/apps/invoice/details",
-              icon: InvoiceMenuIcon,
             },
             {
               title: "Create",
               href: "/apps/invoice/create",
-              icon: InvoiceMenuIcon,
             },
             {
               title: "Edit",
               href: "/apps/invoice/edit",
-              icon: InvoiceMenuIcon,
             },
           ],
         },
@@ -165,22 +161,18 @@ export const sidebarConfig = {
             {
               title: "Profile",
               href: "/apps/user-profile/profile",
-              icon: UserProfileMenuIcon,
             },
             {
               title: "Followers",
               href: "/apps/user-profile/followers",
-              icon: UserProfileMenuIcon,
             },
             {
               title: "Friends",
               href: "/apps/user-profile/friends",
-              icon: UserProfileMenuIcon,
             },
             {
               title: "Gallery",
               href: "/apps/user-profile/gallery",
-              icon: UserProfileMenuIcon,
             },
           ],
         },
@@ -191,27 +183,22 @@ export const sidebarConfig = {
             {
               title: "Blog Post",
               href: "/apps/blogs/blog-post",
-              icon: BlogsMenuIcon,
             },
             {
               title: "Blog Detail",
               href: "/apps/blogs/blog-detail",
-              icon: BlogsMenuIcon,
             },
             {
               title: "Blog Edit",
               href: "/apps/blogs/blog-edit",
-              icon: BlogsMenuIcon,
             },
             {
               title: "Blog Create",
               href: "/apps/blogs/blog-create",
-              icon: BlogsMenuIcon,
             },
             {
               title: "Manage Blog",
               href: "/apps/blogs/manage-blog",
-              icon: BlogsMenuIcon,
             },
           ],
         },
@@ -222,32 +209,26 @@ export const sidebarConfig = {
             {
               title: "Shop",
               href: "/apps/ecommerce/shop",
-              icon: EcommerceMenuIcon,
             },
             {
               title: "Details",
               href: "/apps/ecommerce/details",
-              icon: EcommerceMenuIcon,
             },
             {
               title: "List",
               href: "/apps/ecommerce/list",
-              icon: EcommerceMenuIcon,
             },
             {
               title: "Checkout",
               href: "/apps/ecommerce/checkout",
-              icon: EcommerceMenuIcon,
             },
             {
               title: "Add Product",
               href: "/apps/ecommerce/add-product",
-              icon: EcommerceMenuIcon,
             },
             {
               title: "Edit Product",
               href: "/apps/ecommerce/edit-product",
-              icon: EcommerceMenuIcon,
             },
           ],
         },
