@@ -1,14 +1,21 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Geist, Geist_Mono, Inter, Noto_Serif_Georgian } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-geist-mono",
+})
+
+const fontSerif = Noto_Serif_Georgian({
+  subsets: ["latin"],
+  variable: "--font-serif-georgian",
 })
 
 export default function RootLayout({
@@ -20,9 +27,16 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "h-full antialiased",
+        geist.variable,
+        fontMono.variable,
+        fontSerif.variable,
+        inter.variable
+      )}
+      data-theme="verdant"
     >
-      <body>
+      <body className="h-full bg-background text-foreground">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
