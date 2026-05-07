@@ -34,7 +34,7 @@ export interface NavItemMetadata {
 
 export interface NavItem {
   title: string
-  href: RouteHref
+  href?: RouteHref
   icon?: IconComponent
   badge?: NavBadge
   items?: NavItem[]

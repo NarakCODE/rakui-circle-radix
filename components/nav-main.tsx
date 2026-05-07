@@ -37,14 +37,22 @@ export function NavMain({
       {subItems.map((subItem) => {
         const isSubItemActive = isNavItemActive(subItem, pathname)
         const SubIcon = subItem.icon
+        const subItemKey = subItem.href ?? subItem.title
 
         return (
-          <SidebarMenuSubItem key={subItem.href}>
-            <SidebarMenuSubButton asChild isActive={isSubItemActive}>
-              <Link href={subItem.href}>
-                {SubIcon ? <SubIcon aria-hidden="true" className="size-4" /> : null}
-                <span>{subItem.title}</span>
-              </Link>
+          <SidebarMenuSubItem key={subItemKey}>
+            <SidebarMenuSubButton asChild={Boolean(subItem.href)} isActive={isSubItemActive}>
+              {subItem.href ? (
+                <Link href={subItem.href}>
+                  {SubIcon ? <SubIcon aria-hidden="true" className="size-4" /> : null}
+                  <span>{subItem.title}</span>
+                </Link>
+              ) : (
+                <>
+                  {SubIcon ? <SubIcon aria-hidden="true" className="size-4" /> : null}
+                  <span>{subItem.title}</span>
+                </>
+              )}
             </SidebarMenuSubButton>
             {subItem.items?.length ? renderSubItems(subItem.items) : null}
           </SidebarMenuSubItem>
@@ -61,10 +69,11 @@ export function NavMain({
           const Icon = item.icon
           const isActive = isNavItemActive(item, pathname)
           const hasChildren = Boolean(item.items?.length)
+          const itemKey = item.href ?? item.title
 
-          if (!hasChildren) {
+          if (!hasChildren && item.href) {
             return (
-              <SidebarMenuItem key={item.href}>
+              <SidebarMenuItem key={itemKey}>
                 <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
                   <Link href={item.href}>
                     {Icon ? <Icon aria-hidden="true" className="size-4" /> : null}
@@ -80,9 +89,9 @@ export function NavMain({
 
           return (
             <Collapsible
-              key={item.href}
+              key={`${itemKey}-${pathname}`}
               asChild
-              open={isActive}
+              defaultOpen={isActive}
               className="group/collapsible"
             >
               <SidebarMenuItem>

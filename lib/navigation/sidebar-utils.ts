@@ -19,7 +19,9 @@ function matchesHref(
 }
 
 export function isNavItemActive(item: NavItem, pathname: string): boolean {
-  const candidateUrls = [item.href, ...(item.activeUrls ?? [])]
+  const candidateUrls = item.href
+    ? [item.href, ...(item.activeUrls ?? [])]
+    : [...(item.activeUrls ?? [])]
   const matchMode = item.matchMode ?? "prefix"
 
   return (

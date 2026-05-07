@@ -1,15 +1,12 @@
 # Task Checklist
 
-- [x] Inspect the current sidebar implementation, related components, and route structure
-- [x] Define typed sidebar domain models and extract reusable sidebar configuration
-- [x] Refactor sidebar rendering to consume the typed config with Hugeicons-based component references
-- [x] Verify the refactor with relevant TypeScript checks
+- [x] Inspect the current sidebar collapse behavior and identify the lock-up cause
+- [x] Update the sidebar collapsible logic so active sections can still be manually collapsed
+- [x] Verify the sidebar code compiles cleanly after the fix
 
 # Results
 
-- Extracted sidebar domain types into `lib/navigation/sidebar-types.ts`.
-- Moved reusable sidebar data into `lib/navigation/sidebar-config.ts`.
-- Added Hugeicons wrapper components in `components/icons/sidebar-icons.tsx` so config stores PascalCase component references instead of JSX elements.
-- Refactored `AppSidebar`, `NavMain`, `NavUser`, and `TeamSwitcher` to consume typed config and Hugeicons icons.
+- Replaced the controlled `open={isActive}` pattern in [components/nav-main.tsx](/E:/don-toanchetpay/rakui-circle-radix/components/nav-main.tsx:91) with `defaultOpen={isActive}`.
+- Added a pathname-based remount key so the correct section still auto-expands when the route changes, without preventing manual collapse.
 - Verified with `npm run typecheck`.
-- Verified with `npx eslint components/app-sidebar.tsx components/nav-main.tsx components/nav-user.tsx components/team-switcher.tsx components/icons/sidebar-icons.tsx lib/navigation/sidebar-config.ts lib/navigation/sidebar-types.ts lib/navigation/sidebar-utils.ts`.
+- Verified with `npx eslint components/nav-main.tsx`.
