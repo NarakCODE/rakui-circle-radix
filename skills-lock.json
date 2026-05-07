@@ -19,6 +19,12 @@
       "skillPath": "skills/frontend-accessibility-best-practices/SKILL.md",
       "computedHash": "d9160dfd924c53bb033f4fac882a7cb0c2d2a9cd34e19473a6e4f6d09b0917de"
     },
+    "next-intl-add-language": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/next-intl-add-language/SKILL.md",
+      "computedHash": "6b30075c5f43a4498782729f129c513ca28db37d93032a81a07e444d4db575c5"
+    },
     "refactor": {
       "source": "github/awesome-copilot",
       "sourceType": "github",

@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Inter, Noto_Serif_Georgian } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { defaultThemeStyle, getThemeStyleInitScript } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -23,6 +24,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const themeStyleInitScript = getThemeStyleInitScript()
+
   return (
     <html
       lang="en"
@@ -34,8 +37,11 @@ export default function RootLayout({
         fontSerif.variable,
         inter.variable
       )}
-      data-theme="verdant"
+      data-theme={defaultThemeStyle}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeStyleInitScript }} />
+      </head>
       <body className="h-full bg-background text-foreground">
         <ThemeProvider>{children}</ThemeProvider>
       </body>

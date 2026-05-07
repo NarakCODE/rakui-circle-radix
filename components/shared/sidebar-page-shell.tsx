@@ -1,3 +1,5 @@
+import type { ReactNode } from "react"
+
 import { ThemeSelector } from "@/components/theme-selector"
 import { PageHeader } from "@/components/shared/page-header"
 import { Separator } from "@/components/ui/separator"
@@ -7,15 +9,22 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { LanguageSwitcher } from "../language-switcher"
 
 type SidebarPageShellProps = {
   sectionLabel: string
   title: string
+  description?: string
+  action?: ReactNode
+  children?: ReactNode
 }
 
 export function SidebarPageShell({
   sectionLabel,
   title,
+  description,
+  action,
+  children,
 }: SidebarPageShellProps) {
   return (
     <SidebarProvider>
@@ -28,15 +37,23 @@ export function SidebarPageShell({
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
             />
-            <span className="text-sm text-muted-foreground">{sectionLabel}</span>
+            <span className="text-sm text-muted-foreground">
+              {sectionLabel}
+            </span>
           </div>
-          <ThemeSelector />
+          <div className="flex items-center gap-2">
+            <ThemeSelector />
+            <LanguageSwitcher />
+          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 lg:px-6">
-            <PageHeader title={title} description={`Hello ${title}`} />
-          </div>
+          <PageHeader
+            title={title}
+            description={description ?? `Hello ${title}`}
+            action={action}
+          />
+          {children}
         </main>
       </SidebarInset>
     </SidebarProvider>

@@ -3,9 +3,13 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
 
-const themeStyles = ["verdant", "amethyst"] as const
-
-type ThemeStyle = (typeof themeStyles)[number]
+import {
+  defaultThemeStyle,
+  isThemeStyle,
+  themeStyleStorageKey,
+  themeStyles,
+  type ThemeStyle,
+} from "@/lib/theme"
 
 type ThemeStyleContextValue = {
   themeStyle: ThemeStyle
@@ -18,8 +22,8 @@ const ThemeStyleContext = React.createContext<ThemeStyleContextValue | null>(
 
 function ThemeProvider({
   children,
-  defaultThemeStyle = "verdant",
-  themeStyleStorageKey = "theme-style",
+  defaultThemeStyle: initialThemeStyle = defaultThemeStyle,
+  themeStyleStorageKey: initialStorageKey = themeStyleStorageKey,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider> & {
   defaultThemeStyle?: ThemeStyle
@@ -34,8 +38,8 @@ function ThemeProvider({
       {...props}
     >
       <ThemeStyleProvider
-        defaultThemeStyle={defaultThemeStyle}
-        storageKey={themeStyleStorageKey}
+        defaultThemeStyle={initialThemeStyle}
+        storageKey={initialStorageKey}
       >
         <ThemeHotkey />
         {children}
@@ -81,10 +85,6 @@ function ThemeStyleProvider({
       {children}
     </ThemeStyleContext.Provider>
   )
-}
-
-function isThemeStyle(value: string): value is ThemeStyle {
-  return themeStyles.includes(value as ThemeStyle)
 }
 
 function useThemeStyle() {
