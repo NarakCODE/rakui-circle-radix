@@ -2,7 +2,7 @@
 
 import type { CSSProperties, ReactNode } from "react"
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
 export type StatCardDensity = "default" | "compact"
@@ -38,19 +38,19 @@ export function StatCard({
 
   return (
     <Card
-      className={cn(
-        "gap-0 border bg-muted/40 shadow-none ring-0 dark:bg-muted/25",
-        className
-      )}
+      className={cn("gap-0 border bg-background shadow-none ring-0", className)}
       style={cardStyle}
     >
       <CardHeader
         className={cn("px-2 pt-1", density === "compact" ? "pb-1.5" : "pb-2")}
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
             {icon ? <span className="shrink-0">{icon}</span> : null}
-            <span>{title}</span>
+
+            <CardTitle>
+              <span>{title}</span>
+            </CardTitle>
           </div>
 
           {headerAside ? <div>{headerAside}</div> : null}
@@ -76,8 +76,7 @@ export function StatCard({
         >
           {value}
         </div>
-
-        {footer ? <div>{footer}</div> : null}
+        {footer ? <div className="mt-2">{footer}</div> : null}
       </CardContent>
     </Card>
   )

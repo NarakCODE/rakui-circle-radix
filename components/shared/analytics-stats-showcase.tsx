@@ -154,7 +154,7 @@ export function AnalyticsStatsShowcase() {
                 width={220}
                 height={180}
                 unoptimized
-                className="h-auto w-[180px] object-contain sm:w-[220px]"
+                className="h-auto w-45 object-contain sm:w-55"
               />
             </div>
           </div>

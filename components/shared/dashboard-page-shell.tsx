@@ -10,8 +10,7 @@ type DashboardPageShellProps = {
   children?: ReactNode
 }
 
-const dashboardContentClassName =
-  "mx-auto w-full max-w-full px-4 pb-6 sm:px-6 lg:px-8 lg:pb-8"
+const dashboardContentClassName = "mx-auto w-full max-w-full"
 
 export function DashboardPageShell({
   title,

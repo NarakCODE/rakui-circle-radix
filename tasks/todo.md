@@ -1,11 +1,13 @@
 # Task Checklist
 
-- [x] Inspect the current analytics page and shared `StatCard` API
-- [x] Integrate `StatCard` into the analytics page with a consistent responsive layout
-- [x] Verify the affected analytics files and record the result
+- [x] Confirm the source of the `negative` prop error in recent transactions
+- [x] Fix the transaction item typing with the smallest safe change
+- [x] Verify the updated recent transactions file and record the result
 
 # Results
 
-- Rebuilt `app/dashboard/analytics/page.tsx` around the shared `StatCard` component instead of rendering an incomplete `StatCard` call with missing props.
-- The analytics page now uses `StatCard` for the key metrics (`Earnings`, `Expenses`, `Weekly Sales`, and `Purchase Orders`) inside a responsive dashboard layout, alongside the existing illustration.
-- Verified with targeted `pnpm exec eslint app/dashboard/analytics/page.tsx components/shared/stat-card.tsx`.
+- Confirmed the TypeScript error came from `recentTransactions` being inferred as a union of object literals where most items did not have a `negative` property, so `transaction.negative` was not safe to access at the map site.
+- Fixed `app/dashboard/analytics/_components/recent-transactions-card.tsx` by explicitly typing the `recentTransactions` array as `RecentTransactionItemProps[]`, which gives every item the same optional `negative` field shape.
+- Removed an unused `DropdownMenuSeparator` import while updating the file.
+- Verified with `pnpm exec eslint app/dashboard/analytics/_components/recent-transactions-card.tsx`.
+- Re-ran `pnpm exec tsc --noEmit 2>&1 | Select-String "recent-transactions-card|negative"` and it returned no matching errors for this file after the fix.
