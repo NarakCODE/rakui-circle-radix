@@ -1,13 +1,13 @@
 # Task Checklist
 
-- [x] Inspect the current Ecommerce dashboard page and local `_components` structure
-- [x] Split the Ecommerce page into local `_components` and keep `page.tsx` as the shell entrypoint
-- [x] Verify the refactor and record the result
+- [x] Inspect `app/apps/ai/chat/page.tsx` and nearby route imports
+- [x] Fix the AI chat page route export and local shadcn composition issue
+- [x] Verify the AI chat route and record results
 
 # Results
 
-- Split `app/dashboard/e-commerce/page.tsx` into a thin page shell that now imports `EcommercePageActions` and `EcommerceDashboardSection`.
-- Moved the dashboard data, card sections, tables, charts, and summary strip into `app/dashboard/e-commerce/_components/*` files so each visual block has its own module.
-- Added `app/dashboard/e-commerce/_components/data.ts` to keep the typed placeholder data and chart config definitions separate from the view components.
-- Verified with `pnpm exec eslint app/dashboard/e-commerce/page.tsx app/dashboard/e-commerce/_components/*.tsx app/dashboard/e-commerce/_components/data.ts`.
-- Verified the refactor with `pnpm exec tsc --noEmit 2>&1 | Select-String "app/dashboard/e-commerce/"`; it returned no matching errors for the Ecommerce page and its `_components`.
+- Confirmed `app/apps/ai/chat/page.tsx` was missing the required default export, which broke Next page validation and the localized route import in `app/[locale]/[[...slug]]/page.tsx`.
+- Changed `AppsAiChatPage` to the default export and wrapped its chat UI with `SidebarPageShell` so it behaves like the other app pages.
+- Wrapped model `SelectItem` entries in `SelectGroup` to match the local select composition pattern.
+- Verified with `pnpm exec eslint app/apps/ai/chat/page.tsx`.
+- Verified with `pnpm exec tsc --noEmit 2>&1 | Select-String "app/apps/ai/chat|apps/ai/chat|AppsAiChatPage"`; it returned no matching errors for the AI chat route.
