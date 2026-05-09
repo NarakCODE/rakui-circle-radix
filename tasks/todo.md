@@ -1,13 +1,13 @@
 # Task Checklist
 
-- [x] Confirm the source of the `negative` prop error in recent transactions
-- [x] Fix the transaction item typing with the smallest safe change
-- [x] Verify the updated recent transactions file and record the result
+- [x] Inspect the current Ecommerce dashboard page and local `_components` structure
+- [x] Split the Ecommerce page into local `_components` and keep `page.tsx` as the shell entrypoint
+- [x] Verify the refactor and record the result
 
 # Results
 
-- Confirmed the TypeScript error came from `recentTransactions` being inferred as a union of object literals where most items did not have a `negative` property, so `transaction.negative` was not safe to access at the map site.
-- Fixed `app/dashboard/analytics/_components/recent-transactions-card.tsx` by explicitly typing the `recentTransactions` array as `RecentTransactionItemProps[]`, which gives every item the same optional `negative` field shape.
-- Removed an unused `DropdownMenuSeparator` import while updating the file.
-- Verified with `pnpm exec eslint app/dashboard/analytics/_components/recent-transactions-card.tsx`.
-- Re-ran `pnpm exec tsc --noEmit 2>&1 | Select-String "recent-transactions-card|negative"` and it returned no matching errors for this file after the fix.
+- Split `app/dashboard/e-commerce/page.tsx` into a thin page shell that now imports `EcommercePageActions` and `EcommerceDashboardSection`.
+- Moved the dashboard data, card sections, tables, charts, and summary strip into `app/dashboard/e-commerce/_components/*` files so each visual block has its own module.
+- Added `app/dashboard/e-commerce/_components/data.ts` to keep the typed placeholder data and chart config definitions separate from the view components.
+- Verified with `pnpm exec eslint app/dashboard/e-commerce/page.tsx app/dashboard/e-commerce/_components/*.tsx app/dashboard/e-commerce/_components/data.ts`.
+- Verified the refactor with `pnpm exec tsc --noEmit 2>&1 | Select-String "app/dashboard/e-commerce/"`; it returned no matching errors for the Ecommerce page and its `_components`.

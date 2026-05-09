@@ -101,7 +101,7 @@ export function RevenueUpdatesCard() {
   const [year, setYear] = React.useState<YearOption>("2026")
 
   return (
-    <Card className="w-full overflow-hidden">
+    <Card className="h-full w-full overflow-hidden">
       <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-card-foreground">
@@ -140,7 +140,7 @@ export function RevenueUpdatesCard() {
                 accessibilityLayer
                 data={revenueChartData}
                 margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
-                barSize={8}
+                barSize={12}
               >
                 <CartesianGrid vertical={false} />
 
@@ -154,7 +154,9 @@ export function RevenueUpdatesCard() {
                 <YAxis
                   tickLine={false}
                   axisLine={false}
+                  domain={[0, 6]}
                   tickMargin={8}
+                  ticks={[0, 1, 2, 3, 4, 5, 6]}
                   tickFormatter={(value) => `${value}k`}
                 />
 

@@ -16,9 +16,22 @@ type ThemeStyleContextValue = {
   setThemeStyle: (themeStyle: ThemeStyle) => void
 }
 
+const THEME_STYLE_EVENT = "theme-style-change"
+
 const ThemeStyleContext = React.createContext<ThemeStyleContextValue | null>(
   null
 )
+
+function getStoredThemeStyle(storageKey: string, defaultThemeStyle: ThemeStyle) {
+  if (typeof window === "undefined") {
+    return defaultThemeStyle
+  }
+
+  const storedThemeStyle = window.localStorage.getItem(storageKey)
+  return storedThemeStyle && isThemeStyle(storedThemeStyle)
+    ? storedThemeStyle
+    : defaultThemeStyle
+}
 
 function ThemeProvider({
   children,
@@ -56,28 +69,39 @@ function ThemeStyleProvider({
   defaultThemeStyle: ThemeStyle
   storageKey: string
 }>) {
-  const [themeStyle, setThemeStyle] = React.useState<ThemeStyle>(() => {
-    if (typeof window === "undefined") {
-      return defaultThemeStyle
-    }
+  const themeStyle = React.useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener("storage", onStoreChange)
+      window.addEventListener(THEME_STYLE_EVENT, onStoreChange)
 
-    const storedThemeStyle = window.localStorage.getItem(storageKey)
-    return storedThemeStyle && isThemeStyle(storedThemeStyle)
-      ? storedThemeStyle
-      : defaultThemeStyle
-  })
+      return () => {
+        window.removeEventListener("storage", onStoreChange)
+        window.removeEventListener(THEME_STYLE_EVENT, onStoreChange)
+      }
+    },
+    () => getStoredThemeStyle(storageKey, defaultThemeStyle),
+    () => defaultThemeStyle
+  )
+
+  const setThemeStyle = React.useCallback(
+    (nextThemeStyle: ThemeStyle) => {
+      document.documentElement.dataset.theme = nextThemeStyle
+      window.localStorage.setItem(storageKey, nextThemeStyle)
+      window.dispatchEvent(new Event(THEME_STYLE_EVENT))
+    },
+    [storageKey]
+  )
 
   React.useEffect(() => {
     document.documentElement.dataset.theme = themeStyle
-    window.localStorage.setItem(storageKey, themeStyle)
-  }, [storageKey, themeStyle])
+  }, [themeStyle])
 
   const value = React.useMemo(
     () => ({
       themeStyle,
       setThemeStyle,
     }),
-    [themeStyle]
+    [setThemeStyle, themeStyle]
   )
 
   return (
